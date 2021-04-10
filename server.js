@@ -1,5 +1,4 @@
 const App = require("./app")
-const generateFakeData = require("./test/facker")
 
 // 3000번 포트
 const server = new App().app

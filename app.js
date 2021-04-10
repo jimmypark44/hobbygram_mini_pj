@@ -14,7 +14,7 @@ class App {
     }
     setDB() {
         mongoose
-            .connect("mongodb://localhost:27017/admin", {
+            .connect("mongodb://localhost:27017/hobbygram", {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useCreateIndex: true,

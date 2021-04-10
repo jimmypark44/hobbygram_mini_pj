@@ -20,13 +20,12 @@ exports.login = async (req, res, next) => {
 }
 
 exports.join = async (req, res, next) => {
-    const { name, email, password, role } = req.body
+    const { name, email, password } = req.body
 
     if (typeof name !== "string") return res.status(400).send({ err: "이름 형식이 틀립니다." })
     if (typeof email !== "string") return res.status(400).send({ err: "이메일 형식이 틀렸습니다." })
     if (typeof password !== "string")
         return res.status(400).send({ err: "비밀번호가 형식이 틀렸습니다." })
-    if (typeof role !== "string") return res.status(400).send({ err: "직함 형식이 틀렸습니다." })
 
     const user = await User.findOne({ email })
     if (user) return res.status(400).send({ err: "이미 존재하는 사용자입니다." })

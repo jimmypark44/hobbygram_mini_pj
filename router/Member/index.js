@@ -1,7 +1,7 @@
 const { Router } = require("express")
 const MemeberController = require("./controller")
 const MemberRouter = Router()
-const isVaildation = require("../../middlewares/vaildations")
+const isVaildation = require("../../middlewares/validations")
 // 자세한 코드는 controller에서 확인 가능
 
 // 로그인 / 토큰 발행
