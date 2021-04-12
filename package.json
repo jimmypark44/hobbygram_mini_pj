@@ -14,7 +14,6 @@
     "morgan": "^1.10.0",
     "notenv": "^2.0.3"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
