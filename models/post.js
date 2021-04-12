@@ -9,13 +9,16 @@ const postSchema = new Schema({
 	content: {
 		type: String,
 	},
-	createAt: {
+	createdAt: {
 		type: Date,
 		default: Date.now,
 	},
 	title: {
 		type: String,
 		required: true,
+	},
+	img: {
+		type: String,
 	},
 	category: {
 		type: String,
