@@ -1,5 +1,6 @@
 const express = require("express");
-const { upload, detail, editPost, deletePost } = require("./controller");
+
+const { upload, detail, editPost, deletePost } = require("./controller.js");
 
 const postRouter = express.Router();
 

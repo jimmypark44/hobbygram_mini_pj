@@ -1,23 +1,23 @@
-const { Post } = require("../../models");
-const post = require("../../models/post");
+const Post = require("../../models/post.js");
 
-exports.upload = async (req, res) => {
+//글 작성하기
+const upload = async (req, res) => {
 	//login user정보
-	const { user } = res.locals.user;
+	//const { user } = res.locals.user;
 	const {
 		body: { title, content, category },
-		img: { path },
+		//img: { path },
 	} = req;
-	let {};
 	try {
-		const newPost = await post.create({
-			user,
+		let recommendCnt = 0;
+		const newPost = await Post.create({
+			//user,
 			content,
 			title,
-			img: path,
 			category,
-			recommendCnt,
-			commentCnt,
+			//img: path,
+			recommendUser: [],
+			recommendCnt: 0,
 		});
 		res.send({ newPost });
 	} catch (error) {
@@ -28,7 +28,8 @@ exports.upload = async (req, res) => {
 	}
 };
 
-exports.detail = async (req, res) => {
+//상세페이지DB 보내주기
+const detail = async (req, res) => {
 	const {
 		params: { postId: id },
 	} = req;
@@ -43,7 +44,8 @@ exports.detail = async (req, res) => {
 	}
 };
 
-exports.editPost = async (req, res) => {
+//수정하기
+const editPost = async (req, res) => {
 	const {
 		params: { postId: id },
 		body: { content },
@@ -60,7 +62,8 @@ exports.editPost = async (req, res) => {
 	}
 };
 
-exports.deletePost = async (req, res) => {
+//삭제하기
+const deletePost = async (req, res) => {
 	const {
 		params: { postId: id },
 	} = req;
@@ -76,3 +79,5 @@ exports.deletePost = async (req, res) => {
 		console.log(error);
 	}
 };
+
+module.exports = { deletePost, editPost, upload, detail };

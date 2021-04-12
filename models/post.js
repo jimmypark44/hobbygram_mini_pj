@@ -2,7 +2,7 @@ const { number } = require("joi");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const postSchema = new Schema({
+const PostSchema = new Schema({
 	user: {
 		type: String,
 	},
@@ -24,11 +24,14 @@ const postSchema = new Schema({
 		type: String,
 	},
 	recommendCnt: {
-		type: number,
+		type: Number,
 	},
-	commentCnt: {
-		type: number,
+	recommedUser: {
+		type: Array,
 	},
+	// commentCnt: {
+	// 	type: number,
+	// },
 });
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model("Post", PostSchema);
