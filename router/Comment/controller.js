@@ -46,4 +46,15 @@ const commentEdit = async (req, res) => {
 	});
 };
 
-module.exports = { commentUpload, commentEdit };
+//댓글 삭제하기
+const commentDelete = async (req, res) => {
+	const {
+		params: { commentId: id },
+	} = req;
+
+	await Comment.findByIdAndDelete(id);
+	res.send({
+		result: "success",
+	});
+};
+module.exports = { commentUpload, commentEdit, commentDelete };
