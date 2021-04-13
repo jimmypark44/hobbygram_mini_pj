@@ -4,7 +4,6 @@ const { commentUpload, commentEdit } = require("./controller");
 const commentRouter = express.Router();
 
 commentRouter.post("/comment/:postId", validations, commentUpload);
-commentRouter.get("/comment/:postId", commentUpload);
-commentRouter.patch("/comment/:postId", commentEdit);
+commentRouter.patch("/comment/:commentId", commentEdit);
 
 module.exports = { commentRouter };

@@ -36,11 +36,11 @@ const commentUpload = async (req, res) => {
 //댓글 수정하기
 const commentEdit = async (req, res) => {
 	const {
-		params: { postId: id },
-		body: content,
+		params: { commentId: id },
+		body: { content },
 	} = req;
 
-	await findByIdAndUpdate(id, { content });
+	await Comment.findByIdAndUpdate(id, { content });
 	res.send({
 		content,
 	});
