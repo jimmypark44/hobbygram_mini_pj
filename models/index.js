@@ -2,4 +2,5 @@
 const DB = {};
 DB.User = require("./user");
 DB.Post = require("./post");
+DB.Comment = require("./comment");
 module.exports = DB;
