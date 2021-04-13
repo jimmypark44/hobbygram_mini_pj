@@ -2,11 +2,8 @@ const { number, date } = require("joi");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const PostSchema = new Schema(
+const postSchema = new Schema(
 	{
-		user: {
-			type: String,
-		},
 		content: {
 			type: String,
 		},
@@ -30,10 +27,20 @@ const PostSchema = new Schema(
 		recommedUser: {
 			type: Array,
 		},
+		comment: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Comment",
+			},
+		],
+		user: {
+			type: String,
+			required: true,
+		},
 	},
 	{
 		timestamps: true,
 	}
 );
 
-module.exports = mongoose.model("Post", PostSchema);
+module.exports = mongoose.model("Post", postSchema);

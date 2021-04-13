@@ -1,4 +1,5 @@
 const Post = require("../../models/post.js");
+const User = require("../../models/user");
 const getCurrentDate = require("./calDate");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
@@ -14,10 +15,14 @@ const postUpload = async (req, res) => {
 	} = req;
 	//TODO: save image, path
 	try {
+		//Login 한 유저의 정보에서 user name 가져오는 코드
+		const userInfo = await User.findOne({ _id: userId });
+		const user = userInfo.name;
+		//DB.create 코드
 		const newPost = await Post.create({
-			user: userId,
-			content,
 			title,
+			content,
+			user,
 			category,
 			//img: path,
 			recommendUser: [],
@@ -37,7 +42,7 @@ const detail = async (req, res) => {
 		params: { postId: id },
 	} = req;
 	try {
-		const post = await Post.findById(id);
+		const post = await Post.findById(id).populate("comment");
 		res.send({ post });
 	} catch (error) {
 		res.status(400).send({
