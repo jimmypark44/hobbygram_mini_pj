@@ -1,5 +1,6 @@
 const Comment = require("../../models/comment");
 const Post = require("../../models/post");
+const User = require("../../models/user");
 
 //댓글 작성하기
 const commentUpload = async (req, res) => {
@@ -9,7 +10,7 @@ const commentUpload = async (req, res) => {
 		body: { content },
 	} = req;
 	try {
-		const post = Post.findById(id);
+		const post = await Post.findById(id);
 		//Login 한 유저의 정보에서 user name 가져오는 코드
 		const userInfo = await User.findOne({ _id: userId });
 		const user = userInfo.name;
@@ -18,6 +19,8 @@ const commentUpload = async (req, res) => {
 			user,
 			content,
 		});
+		post.save();
+		post.comment.push(comment);
 		res.send({
 			comment,
 			success: "true",
@@ -26,11 +29,9 @@ const commentUpload = async (req, res) => {
 		res.send({
 			errormessage: "댓글 작성 중 오류 발생했습니다.",
 		});
+		console.log(error);
 	}
 };
-
-//댓글 조회하기
-const comment = async (req, res) => {};
 
 //댓글 수정하기
 const commentEdit = async (req, res) => {
