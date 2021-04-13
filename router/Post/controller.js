@@ -1,23 +1,26 @@
 const Post = require("../../models/post.js");
+const getCurrentDate = require("./calDate");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 //글 작성하기
-const upload = async (req, res) => {
+const postUpload = async (req, res) => {
 	//login user정보
-	//const { user } = res.locals.user;
+	const userId = res.locals.user;
 	const {
-		body: { title, content, category },
+		params: { category },
+		body: { title, content },
 		//img: { path },
 	} = req;
+	//TODO: save image, path
 	try {
-		let recommendCnt = 0;
 		const newPost = await Post.create({
-			//user,
+			user: userId,
 			content,
 			title,
 			category,
 			//img: path,
 			recommendUser: [],
-			recommendCnt: 0,
 		});
 		res.send({ newPost });
 	} catch (error) {
@@ -80,4 +83,4 @@ const deletePost = async (req, res) => {
 	}
 };
 
-module.exports = { deletePost, editPost, upload, detail };
+module.exports = { deletePost, editPost, postUpload, detail };

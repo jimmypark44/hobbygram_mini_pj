@@ -2,37 +2,38 @@ const { number, date } = require("joi");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const PostSchema = new Schema({
-	user: {
-		type: String,
+const PostSchema = new Schema(
+	{
+		user: {
+			type: String,
+		},
+		content: {
+			type: String,
+		},
+		updateAt: {
+			type: Number,
+		},
+		title: {
+			type: String,
+			required: true,
+		},
+		img: {
+			type: String,
+		},
+		category: {
+			type: String,
+		},
+		recommendCnt: {
+			type: Number,
+			default: 0,
+		},
+		recommedUser: {
+			type: Array,
+		},
 	},
-	content: {
-		type: String,
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now(),
-	},
-	title: {
-		type: String,
-		required: true,
-	},
-	img: {
-		type: String,
-	},
-	category: {
-		type: String,
-	},
-	recommendCnt: {
-		type: Number,
-		default: 0,
-	},
-	recommedUser: {
-		type: Array,
-	},
-	// commentCnt: {
-	// 	type: number,
-	// },
-});
+	{
+		timestamps: true,
+	}
+);
 
 module.exports = mongoose.model("Post", PostSchema);
