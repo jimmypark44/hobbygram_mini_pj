@@ -56,7 +56,7 @@ const editPost = async (req, res) => {
 	try {
 		//TODO: 파일도 수정할 수 있도록 추가 예정
 		await Post.findByIdAndUpdate(id, { content });
-		res.send({ content });
+		res.send({ content, success: "true" });
 	} catch (error) {
 		res.status(400).send({
 			errormessage: "게시글 수정 중 오류가 발생했습니다.",
@@ -73,7 +73,7 @@ const deletePost = async (req, res) => {
 	try {
 		await Post.findByIdAndDelete(id);
 		res.send({
-			message: "삭제완료!",
+			success: "true",
 		});
 	} catch (error) {
 		res.status(400).send({
