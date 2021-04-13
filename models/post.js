@@ -1,4 +1,4 @@
-const { number } = require("joi");
+const { number, date } = require("joi");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
@@ -11,7 +11,7 @@ const PostSchema = new Schema({
 	},
 	createdAt: {
 		type: Date,
-		default: Date.now,
+		default: Date.now(),
 	},
 	title: {
 		type: String,
@@ -25,6 +25,7 @@ const PostSchema = new Schema({
 	},
 	recommendCnt: {
 		type: Number,
+		default: 0,
 	},
 	recommedUser: {
 		type: Array,
