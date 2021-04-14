@@ -3,7 +3,7 @@ const User = require("../../models/user.js");
 // const getCurrentDate = require("./calDate");
 const multer = require("multer");
 //multer를 이용한 파일업로드 middleware, 분리 필요한가?
-const upload = multer({ dest: "uploads/" });
+exports.upload = multer({ dest: "uploads/" });
 
 //글 작성하기
 exports.postUpload = async (req, res) => {
