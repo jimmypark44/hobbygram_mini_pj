@@ -35,7 +35,7 @@ class App {
 		this.app.use("/img", express.static(path.join(__dirname, "uploads")));
 		this.app.use(express.urlencoded({ extended: false }));
 		this.app.use(express.json());
-		this.app.use(cors);
+		this.app.use(cors());
 	}
 	setRouter() {
 		this.app.use(router);
