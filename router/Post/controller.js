@@ -45,7 +45,7 @@ exports.postUpload = async (req, res) => {
 
 exports.showAllPosts = async (req, res) => {
     try {
-        const post = await Post.find().populate("comment")
+        const post = await Post.find()
         res.send({ post })
     } catch (error) {
         res.status(400).send({
