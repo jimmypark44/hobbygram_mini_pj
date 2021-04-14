@@ -137,4 +137,4 @@ const unrecommendPost = async (req, res) => {
 
 }
 
-module.exports = { deletePost, editPost, postUpload, detail };
+module.exports = { deletePost, editPost, postUpload, detail, recommendPost, unrecommendPost };
