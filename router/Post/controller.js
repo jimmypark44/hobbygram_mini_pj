@@ -26,7 +26,7 @@ exports.postUpload = async (req, res) => {
             user,
             category,
             img: path,
-            recommendUser: [],
+            recommendUser,
         });
         res.send({ newPost });
     } catch (error) {
@@ -91,21 +91,26 @@ exports.deletePost = async (req, res) => {
 
 // 추천하기
 exports.recommendPost = async (req, res) => {
-    const { postId } = req.params
-    const userId = res.locals.user
+    const {
+        params: { postId: id },
+    } = req;
+    // const { postId } = req.params
+    // const userId = res.locals.user
+    const userId = res.locals.user;
 
     try {
-        const post = await Post.findOne({ _id: postId });
-        if (post.recommended.includes(userId)) {
+        const post = await Post.findOne({ _id: id });
+        if (post.recommendUser.includes(userId)) {
             return res
                 .status(400)
                 .send({ err: "추천을 한 사람은 다시 추천할 수 없습니다." });
         }
+        console.log(post)
         await Post.updateOne(
-            { _id: postId },
+            { _id: id },
             {
-                $push: { recommended: userId },
-                $inc: { recommendedCnt: 1 },
+                $push: { recommendUser: userId },
+                $inc: { recommendCnt: 1 },
             }
         );
     } catch (error) {
@@ -122,14 +127,14 @@ exports.unrecommendPost = async (req, res) => {
 
     try {
         const post = await Post.findOne({ _id: postId });
-        if (!post.recommended.includes(userId)) {
+        if (!post.recommendUser.includes(userId)) {
             return res.status(400).send({ err: "추천을 안 한 상태입니다." });
         }
         await Post.updateOne(
             { _id: postId },
             {
-                $pull: { recommended: userId },
-                $inc: { recommendedCnt: -1 },
+                $pull: { recommendUser: userId },
+                $inc: { recommendCnt: -1 },
             }
         );
     } catch (error) {
