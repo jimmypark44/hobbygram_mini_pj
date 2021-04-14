@@ -11,4 +11,4 @@ postRouter.delete("/post/:postId", deletePost);
 postRouter.post("/post/recommend/:postId", recommendPost);
 postRouter.delete("/post/recommend/:postId", unrecommendPost);
 
-module.exports = { postRouter };
+module.exports = postRouter;

@@ -1,6 +1,6 @@
 const Post = require("../../models/post.js");
 const User = require("../../models/user");
-const getCurrentDate = require("./calDate");
+// const getCurrentDate = require("./calDate");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
@@ -88,7 +88,7 @@ const deletePost = async (req, res) => {
     }
 };
 
-const recommendPost = async (req, res) => {
+exports.recommendPost = async (req, res) => {
     const { postId } = req.params
     const userId = res.locals.user
 
@@ -112,7 +112,7 @@ const recommendPost = async (req, res) => {
     }
 }
 
-const unrecommendPost = async (req, res) => {
+exports.unrecommendPost = async (req, res) => {
     const { postId } = req.params
     const userId = res.locals.user
 
@@ -137,4 +137,4 @@ const unrecommendPost = async (req, res) => {
 
 }
 
-module.exports = { deletePost, editPost, postUpload, detail, recommendPost, unrecommendPost };
+module.exports = { deletePost, editPost, postUpload, detail };
