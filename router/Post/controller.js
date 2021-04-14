@@ -1,12 +1,12 @@
 const Post = require("../../models/post.js");
-const User = require("../../models/user");
+const User = require("../../models/user.js");
 // const getCurrentDate = require("./calDate");
 const multer = require("multer");
 //multer를 이용한 파일업로드 middleware, 분리 필요한가?
 const upload = multer({ dest: "uploads/" });
 
 //글 작성하기
-const postUpload = async (req, res) => {
+exports.postUpload = async (req, res) => {
     //login user정보
     const userId = res.locals.user;
     const {
@@ -38,7 +38,7 @@ const postUpload = async (req, res) => {
 };
 
 //상세페이지DB 보내주기
-const detail = async (req, res) => {
+exports.detail = async (req, res) => {
     const {
         params: { postId: id },
     } = req;
@@ -54,7 +54,7 @@ const detail = async (req, res) => {
 };
 
 //수정하기
-const editPost = async (req, res) => {
+exports.editPost = async (req, res) => {
     const {
         params: { postId: id },
         body: { content },
@@ -72,7 +72,7 @@ const editPost = async (req, res) => {
 };
 
 //삭제하기
-const deletePost = async (req, res) => {
+exports.deletePost = async (req, res) => {
     const {
         params: { postId: id },
     } = req;
@@ -90,7 +90,7 @@ const deletePost = async (req, res) => {
 };
 
 // 추천하기
-const recommendPost = async (req, res) => {
+exports.recommendPost = async (req, res) => {
     const { postId } = req.params
     const userId = res.locals.user
 
@@ -116,7 +116,7 @@ const recommendPost = async (req, res) => {
     }
 };
 
-const unrecommendPost = async (req, res) => {
+exports.unrecommendPost = async (req, res) => {
     const { postId } = req.params;
     const userId = res.locals.user;
 
@@ -140,12 +140,3 @@ const unrecommendPost = async (req, res) => {
     }
 };
 
-module.exports = {
-    deletePost,
-    editPost,
-    postUpload,
-    detail,
-    upload,
-    recommendPost,
-    unrecommendPost,
-};
