@@ -2,6 +2,7 @@ const Post = require("../../models/post.js");
 const User = require("../../models/user");
 // const getCurrentDate = require("./calDate");
 const multer = require("multer");
+//multer를 이용한 파일업로드 middleware, 분리 필요한가?
 const upload = multer({ dest: "uploads/" });
 
 //글 작성하기
@@ -11,7 +12,7 @@ const postUpload = async (req, res) => {
     const {
         params: { category },
         body: { title, content },
-        //img: { path },
+        file: { path },
     } = req;
     //TODO: save image, path
     try {
@@ -24,7 +25,7 @@ const postUpload = async (req, res) => {
             content,
             user,
             category,
-            //img: path,
+            img: path,
             recommendUser: [],
         });
         res.send({ newPost });
@@ -88,14 +89,17 @@ const deletePost = async (req, res) => {
     }
 };
 
-exports.recommendPost = async (req, res) => {
+// 추천하기
+const recommendPost = async (req, res) => {
     const { postId } = req.params
     const userId = res.locals.user
 
     try {
-        const post = await Post.findOne({ _id: postId })
+        const post = await Post.findOne({ _id: postId });
         if (post.recommended.includes(userId)) {
-            return res.status(400).send({ err: "추천을 한 사람은 다시 추천할 수 없습니다." })
+            return res
+                .status(400)
+                .send({ err: "추천을 한 사람은 다시 추천할 수 없습니다." });
         }
         await Post.updateOne(
             { _id: postId },
@@ -103,23 +107,23 @@ exports.recommendPost = async (req, res) => {
                 $push: { recommended: userId },
                 $inc: { recommendedCnt: 1 },
             }
-        )
+        );
     } catch (error) {
         res.status(400).send({
             errormessage: "게시글 추천 중 오류가 발생했습니다.",
         });
         console.log(error);
     }
-}
+};
 
-exports.unrecommendPost = async (req, res) => {
-    const { postId } = req.params
-    const userId = res.locals.user
+const unrecommendPost = async (req, res) => {
+    const { postId } = req.params;
+    const userId = res.locals.user;
 
     try {
-        const post = await Post.findOne({ _id: postId })
+        const post = await Post.findOne({ _id: postId });
         if (!post.recommended.includes(userId)) {
-            return res.status(400).send({ err: "추천을 안 한 상태입니다." })
+            return res.status(400).send({ err: "추천을 안 한 상태입니다." });
         }
         await Post.updateOne(
             { _id: postId },
@@ -127,14 +131,21 @@ exports.unrecommendPost = async (req, res) => {
                 $pull: { recommended: userId },
                 $inc: { recommendedCnt: -1 },
             }
-        )
+        );
     } catch (error) {
         res.status(400).send({
             errormessage: "게시글 추천 중 오류가 발생했습니다.",
         });
         console.log(error);
     }
+};
 
-}
-
-module.exports = { deletePost, editPost, postUpload, detail };
+module.exports = {
+    deletePost,
+    editPost,
+    postUpload,
+    detail,
+    upload,
+    recommendPost,
+    unrecommendPost,
+};
