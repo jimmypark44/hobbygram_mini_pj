@@ -30,9 +30,15 @@ exports.postUpload = async (req, res) => {
         });
         res.send({ newPost });
     } catch (error) {
-        res.status(400).send({
-            errormessage: "게시글 업로드 중 오류가 발생했습니다.",
-        });
+        if (error instanceof multer.MulterError) {
+            res.status(400).send({
+                errormessage: "파일 업로드 중 오류가 발생했습니다.",
+            });
+        } else {
+            res.status(400).send({
+                errormessage: "게시글 업로드 중 오류가 발생했습니다.",
+            });
+        }
         console.log(error);
     }
 };
@@ -144,4 +150,3 @@ exports.unrecommendPost = async (req, res) => {
         console.log(error);
     }
 };
-
