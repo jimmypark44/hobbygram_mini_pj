@@ -3,8 +3,6 @@ const mongoose = require("mongoose");
 const router = require("./router");
 const morgan = require("morgan");
 const path = require("path");
-const { postRouter } = require("./router/Post");
-const { commentRouter } = require("./router/Comment");
 class App {
 	constructor() {
 		this.app = express();
@@ -42,8 +40,6 @@ class App {
 			res.send("hello");
 		});
 		//postrouter로 정의된 라우트들을 사용
-		this.app.use(postRouter);
-		this.app.use(commentRouter);
 	}
 	set404Error() {
 		this.app.use((req, res, _) => {
