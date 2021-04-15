@@ -13,6 +13,6 @@ PostRouter.get("/post/detail/:postId", PostController.detail);
 PostRouter.patch("/post/:postId", PostController.editPost);
 PostRouter.delete("/post/:postId", PostController.deletePost);
 PostRouter.post("/post/recommend/:postId", validations, PostController.recommendPost);
-PostRouter.delete("/post/recommend/:postId", PostController.unrecommendPost);
+// PostRouter.delete("/post/recommend/:postId", validations, PostController.unrecommendPost);
 
 module.exports = PostRouter

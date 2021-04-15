@@ -147,9 +147,14 @@ exports.recommendPost = async (req, res) => {
     try {
         const post = await Post.findOne({ _id: id });
         if (post.recommendUser.includes(userId)) {
-            return res
-                .status(400)
-                .send({ err: "추천을 한 사람은 다시 추천할 수 없습니다." });
+            await Post.updateOne(
+                { _id: id },
+                {
+                    $pull: { recommendUser: userId },
+                    $inc: { recommendCnt: -1 },
+                }
+            );
+            res.send({ success: false })
         }
         await Post.updateOne(
             { _id: id },
@@ -158,7 +163,7 @@ exports.recommendPost = async (req, res) => {
                 $inc: { recommendCnt: 1 },
             }
         );
-        res.send({ recommendUser });
+        res.send({ success: true });
     } catch (error) {
         res.status(400).send({
             errormessage: "게시글 추천 중 오류가 발생했습니다.",
@@ -167,26 +172,27 @@ exports.recommendPost = async (req, res) => {
     }
 };
 
-exports.unrecommendPost = async (req, res) => {
-    const { postId } = req.params;
-    const userId = res.locals.user;
+// exports.unrecommendPost = async (req, res) => {
+//     const { postId } = req.params;
+//     const userId = res.locals.user;
 
-    try {
-        const post = await Post.findOne({ _id: postId });
-        if (!post.recommendUser.includes(userId)) {
-            return res.status(400).send({ err: "추천을 안 한 상태입니다." });
-        }
-        await Post.updateOne(
-            { _id: postId },
-            {
-                $pull: { recommendUser: userId },
-                $inc: { recommendCnt: -1 },
-            }
-        );
-    } catch (error) {
-        res.status(400).send({
-            errormessage: "게시글 추천 중 오류가 발생했습니다.",
-        });
-        console.log(error);
-    }
-};
+//     try {
+//         const post = await Post.findOne({ _id: postId });
+//         if (!post.recommendUser.includes(userId)) {
+//             return res.status(400).send({ err: "추천을 안 한 상태입니다." });
+//         }
+//         await Post.updateOne(
+//             { _id: postId },
+//             {
+//                 $pull: { recommendUser: userId },
+//                 $inc: { recommendCnt: -1 },
+//             }
+//         );
+//         res.send({ success: true });
+//     } catch (error) {
+//         res.status(400).send({
+//             errormessage: "게시글 추천 중 오류가 발생했습니다.",
+//         });
+//         console.log(error);
+//     }
+// };
