@@ -154,7 +154,7 @@ exports.recommendPost = async (req, res) => {
                     $inc: { recommendCnt: -1 },
                 }
             );
-            res.send({ success: false })
+            return res.send({ success: false })
         }
         await Post.updateOne(
             { _id: id },
@@ -163,7 +163,7 @@ exports.recommendPost = async (req, res) => {
                 $inc: { recommendCnt: 1 },
             }
         );
-        res.send({ success: true });
+        return res.send({ success: true });
     } catch (error) {
         res.status(400).send({
             errormessage: "게시글 추천 중 오류가 발생했습니다.",
