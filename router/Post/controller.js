@@ -87,11 +87,9 @@ exports.showAllPosts = async (req, res) => {
 
 //상세페이지DB 보내주기
 exports.detail = async (req, res) => {
-    const {
-        params: { postId: id },
-    } = req;
+    const { postId } = req.params
     try {
-        const post = await Post.findById(id).populate("comment");
+        const post = await Post.findById(postId)
         res.send({ post });
     } catch (error) {
         res.status(400).send({
