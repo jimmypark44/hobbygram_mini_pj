@@ -60,6 +60,19 @@ exports.postUpload = async (req, res) => {
     }
 };
 
+exports.showCategoryPosts = async (req, res) => {
+    const { category } = req.params
+    try {
+        const post = await Post.find({ category: category })
+        res.send({ post })
+    } catch (error) {
+        res.status(400).send({
+            errormessage: "게시글을 불러오는 중 오류가 발생했습니다.",
+        });
+        console.log(error);
+    }
+}
+
 exports.showAllPosts = async (req, res) => {
     try {
         const post = await Post.find()

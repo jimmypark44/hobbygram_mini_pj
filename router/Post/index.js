@@ -7,6 +7,7 @@ const upload = require("../../middlewares/imgUpload")
 
 // PostRouter.post("/post/uploadImg", validations, upload.single("img"), PostController.uploadImg)
 PostRouter.post("/post/:category", validations, upload.single("img"), PostController.postUpload);
+PostRouter.get("/post/:category", PostController.showCategoryPosts);
 PostRouter.get("/post", PostController.showAllPosts);
 PostRouter.get("/post/:postId", PostController.detail);
 PostRouter.patch("/post/:postId", PostController.editPost);
