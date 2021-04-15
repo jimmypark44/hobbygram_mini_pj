@@ -20,12 +20,15 @@ exports.postUpload = async (req, res) => {
         body: { title, content }
     } = req;
     const img = req.file.path
+    // 서버에서는 '/', 윈도우에서는 '\\'
+    const temp = img.split('/')[1]
+    const fullimgpath = 'http://15.164.164.65/' + temp
     //TODO: save image, path
     try {
         //Login 한 유저의 정보에서 user name 가져오는 코드
         const userInfo = await User.findOne({ _id: userId });
         const user = userInfo.name;
-        //DB.create 코드
+        // DB.create 코드
         if (!img) {
             const newPost = await Post.create({
                 title,
@@ -40,7 +43,7 @@ exports.postUpload = async (req, res) => {
             content,
             user,
             category,
-            img,
+            img: fullimgpath,
         });
         res.send({ newPost });
     } catch (error) {
