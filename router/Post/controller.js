@@ -103,12 +103,12 @@ exports.detail = async (req, res) => {
 exports.editPost = async (req, res) => {
     const {
         params: { postId: id },
-        body: { content },
+        body: { title, content },
     } = req;
     try {
         //TODO: 파일도 수정할 수 있도록 추가 예정
-        await Post.findByIdAndUpdate(id, { content });
-        res.send({ content, success: "true" });
+        await Post.findByIdAndUpdate(id, { title, content });
+        res.send({ title, content, success: "true" });
     } catch (error) {
         res.status(400).send({
             errormessage: "게시글 수정 중 오류가 발생했습니다.",
