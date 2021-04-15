@@ -1,6 +1,7 @@
 const express = require("express");
 
 const {
+    uploadImg,
     postUpload,
     showAllPosts,
     detail,
@@ -13,10 +14,16 @@ const {
 const validations = require("../../middlewares/validations");
 const postRouter = express.Router();
 
+
+postRouter.post(
+    "/post/uploadImg",
+    validations,
+    upload.single("img"),
+    uploadImg
+)
 postRouter.post(
     "/post/:category",
     validations,
-    upload.single("img"),
     postUpload
 );
 postRouter.get("/post", showAllPosts);

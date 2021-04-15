@@ -7,13 +7,17 @@ const multer = require("multer");
 exports.upload = multer({ dest: "uploads/" });
 
 //글 작성하기
+exports.uploadImg = async (req, res) => {
+    const img = req.file.path
+    res.send({ img })
+}
+
 exports.postUpload = async (req, res) => {
     //login user정보
     const userId = res.locals.user;
     const {
         params: { category },
-        body: { title, content },
-        file: { path },
+        body: { title, content, img }
     } = req;
     //TODO: save image, path
     try {
@@ -21,12 +25,21 @@ exports.postUpload = async (req, res) => {
         const userInfo = await User.findOne({ _id: userId });
         const user = userInfo.name;
         //DB.create 코드
+        if (!img) {
+            const newPost = await Post.create({
+                title,
+                content,
+                user,
+                category
+            })
+            res.send({ newPost })
+        }
         const newPost = await Post.create({
             title,
             content,
             user,
             category,
-            img: path,
+            img,
         });
         res.send({ newPost });
     } catch (error) {
