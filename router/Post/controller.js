@@ -4,21 +4,22 @@ const User = require("../../models/user.js");
 const multer = require("multer");
 
 //multer를 이용한 파일업로드 middleware, 분리 필요한가?
-exports.upload = multer({ dest: "uploads/" });
+// exports.upload = multer({ dest: "uploads/" });
 
-//글 작성하기
-exports.uploadImg = async (req, res) => {
-    const img = req.file.path
-    res.send({ img })
-}
+// //글 작성하기
+// exports.uploadImg = async (req, res) => {
+//     const img = req.file.path
+//     res.send({ img })
+// }
 
 exports.postUpload = async (req, res) => {
     //login user정보
     const userId = res.locals.user;
     const {
         params: { category },
-        body: { title, content, img }
+        body: { title, content }
     } = req;
+    const img = req.file.path
     //TODO: save image, path
     try {
         //Login 한 유저의 정보에서 user name 가져오는 코드
