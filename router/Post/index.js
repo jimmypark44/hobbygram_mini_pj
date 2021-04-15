@@ -1,36 +1,17 @@
-const express = require("express");
-
-const {
-    uploadImg,
-    postUpload,
-    showAllPosts,
-    detail,
-    editPost,
-    deletePost,
-    upload,
-    recommendPost,
-    unrecommendPost,
-} = require("./controller.js");
+const { Router } = require("express")
+const PostController = require("./controller");
+const PostRouter = Router()
 const validations = require("../../middlewares/validations");
-const postRouter = express.Router();
+const upload = require("../../middlewares/imgUpload")
 
 
-postRouter.post(
-    "/post/uploadImg",
-    validations,
-    upload.single("img"),
-    uploadImg
-)
-postRouter.post(
-    "/post/:category",
-    validations,
-    postUpload
-);
-postRouter.get("/post", showAllPosts);
-postRouter.get("/post/:postId", detail);
-postRouter.patch("/post/:postId", editPost);
-postRouter.delete("/post/:postId", deletePost);
-postRouter.post("/post/recommend/:postId", validations, recommendPost);
-postRouter.delete("/post/recommend/:postId", unrecommendPost);
+PostRouter.post("/post/uploadImg", validations, upload.single("img"), PostController.uploadImg)
+PostRouter.post("/post/:category", validations, PostController.postUpload);
+PostRouter.get("/post", PostController.showAllPosts);
+PostRouter.get("/post/:postId", PostController.detail);
+PostRouter.patch("/post/:postId", PostController.editPost);
+PostRouter.delete("/post/:postId", PostController.deletePost);
+PostRouter.post("/post/recommend/:postId", validations, PostController.recommendPost);
+PostRouter.delete("/post/recommend/:postId", PostController.unrecommendPost);
 
-module.exports = { postRouter };
+module.exports = PostRouter
