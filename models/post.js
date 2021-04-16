@@ -6,6 +6,7 @@ const postSchema = new Schema(
     {
         content: {
             type: String,
+            required: true,
         },
         updateAt: {
             type: Number,
@@ -35,7 +36,7 @@ const postSchema = new Schema(
         ],
         user: {
             type: String,
-            required: true,
+            // required: true,
         },
     },
     {
