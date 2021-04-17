@@ -11,6 +11,6 @@ MemberRouter.post("/login", MemberController.login)
 MemberRouter.post("/join", MemberController.join)
 // 이미 있는 이메일인지 확인
 MemberRouter.post("/checkEmail", MemberController.checkEmail)
-MemberRouter.post("/getUser", isValidationwithBody, MemberController.getUser)
+MemberRouter.post("/getUser", isValidation, MemberController.getUser)
 
 module.exports = MemberRouter
