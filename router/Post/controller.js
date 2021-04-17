@@ -64,7 +64,8 @@ exports.postUpload = async (req, res) => {
 exports.showCategoryPosts = async (req, res) => {
     const { category } = req.params;
     try {
-        const post = await Post.find({ category: category });
+        const post = await Post.find({ category: category })
+            .sort({ updatedAt: -1 })
         res.send({ post });
     } catch (error) {
         res.status(400).send({
@@ -76,7 +77,8 @@ exports.showCategoryPosts = async (req, res) => {
 
 exports.showAllPosts = async (req, res) => {
     try {
-        const post = await Post.find();
+        const post = await Post.find({})
+            .sort({ updatedAt: -1 })
         res.send({ post });
     } catch (error) {
         res.status(400).send({
