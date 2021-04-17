@@ -16,10 +16,10 @@ exports.login = async (req, res, next) => {
 				.status(400)
 				.send({ err: "이메일 혹은 비밀번호가 일치하지 않습니다." });
 		const token = jwt.sign(
-			{ userId: user._id, userName: user.name },
+			{ userId: user._id },
 			process.env.TOKEN_KEY
 		);
-		return res.send({ result: { user: { token: token } } });
+		return res.send({ result: { user: { token: token, name: user.name } } });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).send({ err: err.message });
