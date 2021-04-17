@@ -13,6 +13,54 @@ const multer = require("multer");
 // }
 
 exports.postUpload = async (req, res) => {
+    if (!res.locals.user) {
+        const {
+            body: { title, content, category },
+        } = req;
+        //TODO: save image, path
+        try {
+            //Login 한 유저의 정보에서 user name 가져오는 코드
+            // const userInfo = await User.findOne({ _id: userId });
+            // const user = userInfo.name;
+            // DB.create 코드
+            if (!req.file) {
+                const newPost = await Post.create({
+                    title,
+                    content,
+                    // user,
+                    category,
+                });
+                return res.send({ newPost });
+            }
+            console.log(req.file.path)
+            const img = req.file.path;
+            // 서버에서는 '/', 윈도우에서는 '\\'
+            const temp = img.split("/")[1];
+            const fullimgpath = "http://15.164.164.65/" + temp;
+
+            const newPost = await Post.create({
+                title,
+                content,
+                // user,
+                category,
+                img: fullimgpath,
+            });
+            return res.send({ newPost });
+        } catch (error) {
+            if (error instanceof multer.MulterError) {
+                res.status(400).send({
+                    errormessage: "파일 업로드 중 오류가 발생했습니다.",
+                });
+            } else {
+                res.status(400).send({
+                    errormessage: "게시글 업로드 중 오류가 발생했습니다.",
+                });
+            }
+            console.log(error);
+        }
+
+    }
+
     //login user정보
     const userId = res.locals.user;
     const {

@@ -1,13 +1,14 @@
 const { Router } = require("express");
 const PostController = require("./controller");
 const PostRouter = Router();
+const postValidation = require("../../middlewares/postvalidation");
 const validations = require("../../middlewares/validations");
 const upload = require("../../middlewares/imgUpload");
 
 // PostRouter.post("/post/uploadImg", validations, upload.single("img"), PostController.uploadImg)
 PostRouter.post(
     "/post/write",
-    validations,
+    postValidation,
     upload.single("img"),
     PostController.postUpload
 );

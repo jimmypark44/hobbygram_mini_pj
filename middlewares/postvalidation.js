@@ -3,9 +3,6 @@ const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
 module.exports = (req, res, next) => {
-    if (!req.headers.authorization) {
-
-    }
     const { authorization } = req.headers
     try {
         const [tokenType, tokenValue] = authorization.split(" ")
@@ -19,6 +16,7 @@ module.exports = (req, res, next) => {
             User.findById(userId)
                 .then((user) => {
                     res.locals.user = userId
+                    // res.locals.token = tokenValue
                     next()
                 })
                 .catch((err) => {
@@ -29,6 +27,11 @@ module.exports = (req, res, next) => {
             return res.status(400).send({ err: "user err" })
         }
     } catch (err) {
-        return res.status(400).send({ err: "split err" })
+        if (!authorization) {
+            res.locals.user = ""
+            next()
+        } else {
+            return res.status(400).send({ err: "split err" })
+        }
     }
 }
