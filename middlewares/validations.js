@@ -16,6 +16,7 @@ module.exports = (req, res, next) => {
             User.findById(userId)
                 .then((user) => {
                     res.locals.user = userId
+                    res.locals.token = tokenValue
                     next()
                 })
                 .catch((err) => {
