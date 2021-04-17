@@ -59,3 +59,14 @@ exports.checkEmail = async (req, res, next) => {
 		return res.send({ success: true });
 	}
 };
+
+exports.getUser = async (req, res, next) => {
+	const userId = res.locals.user;
+	// const token = res.locals.token
+	const user = await User.findOne({ _id: userId })
+	if (user) {
+		return res.send({ name: user.name, email: user.email })
+	} else {
+		return res.status(400).send({ err: "해당 아이디가 없습니다" });
+	}
+}
