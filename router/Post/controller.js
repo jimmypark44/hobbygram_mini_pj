@@ -14,21 +14,21 @@ const multer = require("multer");
 
 exports.postUpload = async (req, res) => {
     //login user정보
-    // const userId = res.locals.user;
+    const userId = res.locals.user;
     const {
         body: { title, content, category },
     } = req;
     //TODO: save image, path
     try {
         //Login 한 유저의 정보에서 user name 가져오는 코드
-        // const userInfo = await User.findOne({ _id: userId });
-        // const user = userInfo.name;
+        const userInfo = await User.findOne({ _id: userId });
+        const user = userInfo.name;
         // DB.create 코드
         if (!req.file) {
             const newPost = await Post.create({
                 title,
                 content,
-                // user,
+                user,
                 category,
             });
             return res.send({ newPost });
@@ -42,7 +42,7 @@ exports.postUpload = async (req, res) => {
         const newPost = await Post.create({
             title,
             content,
-            // user,
+            user,
             category,
             img: fullimgpath,
         });

@@ -7,7 +7,7 @@ const upload = require("../../middlewares/imgUpload");
 // PostRouter.post("/post/uploadImg", validations, upload.single("img"), PostController.uploadImg)
 PostRouter.post(
     "/post/write",
-    // validations,
+    validations,
     upload.single("img"),
     PostController.postUpload
 );
