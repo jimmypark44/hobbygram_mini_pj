@@ -4,27 +4,37 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-// jwt 사용한 로그인과 회원가입
+// jwt 사용한 로그인 및 토큰 생성
 exports.login = async (req, res, next) => {
 	const { email, password } = req.body;
 	if (typeof email !== "string")
 		return res.status(400).send({ err: "이메일 형식이 틀렸습니다." });
 	if (typeof password !== "string")
 		return res.status(400).send({ err: "비밀번호가 형식이 틀렸습니다." });
+
 	try {
-		const user = await User.findOne().and([{ email }, { password }]);
-		if (!user)
+		//유저정보 유무 확인
+		const user = await User.findOne({ email });
+		if (user == null) {
 			return res
 				.status(400)
 				.send({ err: "이메일 혹은 비밀번호가 일치하지 않습니다." });
-		const token = jwt.sign({ userId: user._id }, process.env.TOKEN_KEY);
-		return res.send({ result: { user: { token: token, name: user.name } } });
+		}
+		const match = await bcrypt.compare(password, user.password);
+		if (match) {
+			const token = jwt.sign({ userId: user._id }, process.env.TOKEN_KEY);
+			return res.send({ result: { user: { token: token, name: user.name } } });
+		}
+		return res
+			.status(400)
+			.send({ err: "이메일 혹은 비밀번호가 일치하지 않습니다." });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).send({ err: err.message });
 	}
 };
 
+//회원가입, 비밀번호 해쉬화하여 저장
 exports.join = async (req, res, next) => {
 	const { name, email, password, password2 } = req.body;
 
@@ -42,7 +52,7 @@ exports.join = async (req, res, next) => {
 
 	const NewUser = new User({ ...req.body });
 	try {
-		//bycrpt
+		//bycrpt 이용해 비밀번호 평문>암호화하여 저장
 		bcrypt.genSalt(saltRounds, function (err, salt) {
 			bcrypt.hash(NewUser.password, salt, function (err, hash) {
 				// Store hash in your password DB.
