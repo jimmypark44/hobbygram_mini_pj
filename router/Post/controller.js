@@ -140,9 +140,10 @@ exports.showAllPosts = async (req, res) => {
 exports.detail = async (req, res) => {
     const { postId } = req.params;
     try {
-        const post = await Post.findById(postId).populate([
+        var post = await Post.findById(postId).populate([
             { path: "comment", select: ["user", "content", "createdAt"] },
         ]);
+        post["commentCnt"] = post.comment.length
         res.send({ post });
     } catch (error) {
         res.status(400).send({
