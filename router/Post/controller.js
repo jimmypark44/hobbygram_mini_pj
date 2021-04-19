@@ -141,7 +141,7 @@ exports.detail = async (req, res) => {
     const { postId } = req.params;
     try {
         const post = await Post.findById(postId).populate([
-            { path: "comment", select: ["user", "content"] },
+            { path: "comment", select: ["user", "content", "createdAt"] },
         ]);
         res.send({ post });
     } catch (error) {
