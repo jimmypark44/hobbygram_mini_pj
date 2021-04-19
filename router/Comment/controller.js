@@ -8,7 +8,10 @@ const showComment = async (req, res) => {
 		params: { postId: id },
 	} = req;
 	try {
-		const post = await Post.findById(id).populate("comment");
+		const post = await Post.findById(id).populate({
+			path: "comment",
+			options: { sort: { createdAt: -1 } },
+		});
 		const comments = post.comment;
 		res.send({
 			comments,

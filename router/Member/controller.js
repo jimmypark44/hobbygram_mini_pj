@@ -20,11 +20,13 @@ exports.login = async (req, res, next) => {
 				.status(400)
 				.send({ err: "이메일 혹은 비밀번호가 일치하지 않습니다." });
 		}
+		//bcrypt 해쉬암호와 입력값 비교, result: true or flase
 		const match = await bcrypt.compare(password, user.password);
 		if (match) {
 			const token = jwt.sign({ userId: user._id }, process.env.TOKEN_KEY);
 			return res.send({ result: { user: { token: token, name: user.name } } });
 		}
+		//유저 이메일과 비밀번호가 불일치 할 때
 		return res
 			.status(400)
 			.send({ err: "이메일 혹은 비밀번호가 일치하지 않습니다." });
