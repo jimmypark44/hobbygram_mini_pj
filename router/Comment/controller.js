@@ -2,6 +2,25 @@ const Comment = require("../../models/comment");
 const Post = require("../../models/post");
 const User = require("../../models/user");
 
+//댓글 조회하기
+const showComment = async (req, res) => {
+	const {
+		params: { postId: id },
+	} = req;
+	try {
+		const post = await Post.findById(id).populate("comment");
+		const comments = post.comment;
+		res.send({
+			comments,
+		});
+	} catch (error) {
+		res.send({
+			errormessage: "댓글을 불러오는 중 오류가 발생했습니다.",
+		});
+		console.log(error);
+	}
+};
+
 //댓글 작성하기
 const commentUpload = async (req, res) => {
 	const userId = res.locals.user;
@@ -57,4 +76,4 @@ const commentDelete = async (req, res) => {
 		result: "success",
 	});
 };
-module.exports = { commentUpload, commentEdit, commentDelete };
+module.exports = { commentUpload, commentEdit, commentDelete, showComment };
