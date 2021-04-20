@@ -155,8 +155,6 @@ exports.detail = async (req, res) => {
         var post = await Post.findById(postId).populate([
             { path: "comment", select: ["user", "content", "createdAt"] },
         ]);
-        console.log(post.comment)
-        console.log(post.comment.length)
         post["commentCnt"] = post.comment.length
         res.send({ post });
     } catch (error) {
