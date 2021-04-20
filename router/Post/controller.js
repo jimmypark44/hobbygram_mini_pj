@@ -110,10 +110,14 @@ exports.postUpload = async (req, res) => {
 };
 
 exports.showCategoryPosts = async (req, res) => {
+    let { page } = req.query
+    page = page || 1
     const { category } = req.params;
     try {
         const post = await Post.find({ category: category })
             .sort({ createdAt: -1 })
+            .skip((page - 1) * 9)
+            .limit(9)
         post.forEach(eachPost => eachPost["commentCnt"] = eachPost.comment.length)
         res.send({ post });
     } catch (error) {
@@ -125,9 +129,13 @@ exports.showCategoryPosts = async (req, res) => {
 };
 
 exports.showAllPosts = async (req, res) => {
+    let { page } = req.query
+    page = page || 1
     try {
         const post = await Post.find({})
             .sort({ createdAt: -1 })
+            .skip((page - 1) * 9)
+            .limit(9)
         post.forEach(eachPost => eachPost["commentCnt"] = eachPost.comment.length)
         res.send({ post });
     } catch (error) {
