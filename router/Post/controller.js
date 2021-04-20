@@ -114,6 +114,7 @@ exports.showCategoryPosts = async (req, res) => {
     try {
         const post = await Post.find({ category: category })
             .sort({ updatedAt: -1 })
+        post.forEach(eachPost => eachPost["commentCnt"] = eachPost.comment.length)
         res.send({ post });
     } catch (error) {
         res.status(400).send({
@@ -127,6 +128,7 @@ exports.showAllPosts = async (req, res) => {
     try {
         const post = await Post.find({})
             .sort({ updatedAt: -1 })
+        post.forEach(eachPost => eachPost["commentCnt"] = eachPost.comment.length)
         res.send({ post });
     } catch (error) {
         res.status(400).send({
