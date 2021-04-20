@@ -115,6 +115,7 @@ exports.showCategoryPosts = async (req, res) => {
     const { category } = req.params;
     try {
         const post = await Post.find({ category: category })
+            .populate([{ path: "comment", select: ["user"] }])
             .sort({ createdAt: -1 })
             .skip((page - 1) * 9)
             .limit(9)
@@ -133,6 +134,7 @@ exports.showAllPosts = async (req, res) => {
     page = page || 1
     try {
         const post = await Post.find({})
+            .populate([{ path: "comment", select: ["user"] }])
             .sort({ createdAt: -1 })
             .skip((page - 1) * 9)
             .limit(9)
@@ -153,6 +155,8 @@ exports.detail = async (req, res) => {
         var post = await Post.findById(postId).populate([
             { path: "comment", select: ["user", "content", "createdAt"] },
         ]);
+        console.log(post.comment)
+        console.log(post.comment.length)
         post["commentCnt"] = post.comment.length
         res.send({ post });
     } catch (error) {
