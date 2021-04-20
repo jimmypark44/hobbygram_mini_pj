@@ -83,7 +83,7 @@ exports.getUser = async (req, res, next) => {
 	// const token = res.locals.token
 	const user = await User.findOne({ _id: userId });
 	if (user) {
-		return res.send({ name: user.name, email: user.email });
+		return res.send({ name: user.name, email: user.email, userId: user._id });
 	} else {
 		return res.status(400).send({ err: "해당 아이디가 없습니다" });
 	}
